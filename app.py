@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS avanzados con estética editorial minimalista (inspiración Apple/Notion)
+# Estilos CSS avanzados: centrado de opciones y modo oscuro total para el uploader
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -40,29 +40,36 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Contenedor estético y limpio para la sección de carga de archivos */
-    div[data-testid="stFileUploader"] {
-        background-color: #0b0f19 !important;
-        border: 2px dashed #4b5563 !important;
-        border-radius: 1rem !important;
-        padding: 1.5rem !important;
-        text-align: center !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    /* Centrar perfectamente el componente st.pills horizontalmente */
+    div[data-testid="stPills"] {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
     
-    div[data-testid="stFileUploader"]:hover {
-        border-color: #8b5cf6 !important;
-        background-color: #111827 !important;
+    div[data-testid="stPills"] > div {
+        justify-content: center !important;
     }
 
-    /* Estilo elegante para el botón de carga interno de Streamlit */
-    div[data-testid="stFileUploader"] button {
-        background-color: #7c3aed !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 0.5rem !important;
-        font-weight: 600 !important;
-        padding: 0.5rem 1rem !important;
+    /* Eliminar el fondo blanco feo del File Uploader nativo y pasarlo a oscuro minimalista */
+    div[data-testid="stFileUploader"] {
+        background-color: #111827 !important;
+        border: 1px solid #1f2937 !important;
+        border-radius: 1rem !important;
+        padding: 1rem !important;
+    }
+
+    div[data-testid="stFileUploader"] section {
+        background-color: #0b0f19 !important;
+        border: 2px dashed #374151 !important;
+        border-radius: 0.75rem !important;
+        color: #f3f4f6 !important;
+    }
+    
+    div[data-testid="stFileUploader"] section div, 
+    div[data-testid="stFileUploader"] section span, 
+    div[data-testid="stFileUploader"] section small {
+        color: #9ca3af !important;
     }
 
     div[data-testid="stVideo"] {
@@ -89,33 +96,29 @@ except Exception:
 
 # Título y Subtítulo
 st.markdown("""
-<div style="text-align: center; max-width: 44rem; margin: 0 auto 1.5rem auto;">
-    <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem;">Evalua tu oratoria con precision de experto</h2>
-    <p style="color: #9ca3af; font-size: 0.88rem; line-height: 1.5;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
+<div style="text-align: center; max-width: 44rem; margin: 0 auto 1.2rem auto;">
+    <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem;">Evalua tu oratoria con precision de experto</h2>
+    <p style="color: #9ca3af; font-size: 0.85rem; line-height: 1.5;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Centrar horizontalmente los botones/opciones usando columnas simétricas
-_, col_center, _ = st.columns([0.5, 3, 0.5])
+# Selector de modos centrado
+input_option = st.pills(
+    "Modo de entrada",
+    options=["Subir Archivo", "Grabar Video", "YouTube"],
+    default="Subir Archivo",
+    label_visibility="collapsed"
+)
 
-with col_center:
-    input_option = st.pills(
-        "Modo de entrada",
-        options=["Subir Archivo", "Grabar Video", "YouTube"],
-        default="Subir Archivo",
-        label_visibility="collapsed"
-    )
-
-st.markdown("<div style='margin-bottom: 1.2rem;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
 
 video_to_process = None
 
 if input_option == "Subir Archivo":
-    # Contenedor visualmente mejorado para la carga
     st.markdown("""
-    <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 1rem; padding: 1.2rem; text-align: center; margin-bottom: 0.8rem;">
-        <p style="color: #f3f4f6; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem;">Sube tu archivo de video</p>
-        <p style="color: #9ca3af; font-size: 0.75rem;">Formatos compatibles: MP4, MOV, WEBM (Max. 200MB)</p>
+    <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 0.8rem; padding: 1rem; text-align: center; margin-bottom: 0.6rem;">
+        <p style="color: #f3f4f6; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem;">Sube tu archivo de video</p>
+        <p style="color: #9ca3af; font-size: 0.72rem;">Formatos compatibles: MP4, MOV, WEBM (Max. 200MB)</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -124,19 +127,19 @@ if input_option == "Subir Archivo":
         video_to_process = uploaded_file
 
 elif input_option == "Grabar Video":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
     recorded_file = st.camera_input("Grabar discurso")
     if recorded_file is not None:
         video_to_process = recorded_file
 
 elif input_option == "YouTube":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
     youtube_url = st.text_input("Enlace de YouTube", placeholder="https://www.youtube.com/watch?v=...")
     if youtube_url:
         st.info("Nota: Para un analisis multimodal optimo, te recomendamos usar la opcion de subir archivo o grabacion directa.")
 
 if video_to_process is not None:
-    st.markdown("<div style='margin-top: 1.2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
     col_vid, col_btn = st.columns([1, 2])
     
     with col_vid:
@@ -212,7 +215,7 @@ if video_to_process is not None:
 
 else:
     # 5 ITEMS PRINCIPALES
-    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 1.8rem;'></div>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align: center; font-size: 0.95rem; color: #9ca3af; margin-bottom: 0.8rem;'>Que evaluara nuestra IA en tu intervencion?</h3>", unsafe_allow_html=True)
     
     col_i1, col_i2, col_i3, col_i4, col_i5 = st.columns(5)
@@ -226,4 +229,4 @@ else:
     with col_i4:
         st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>4. Pitch</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Persuasion</div></div>", unsafe_allow_html=True)
     with col_i5:
-        st.markdown("<div style='background-color: #111827; border: 1px실; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>5. Emocion</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Empatia</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>5. Emocion</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Empatia</div></div>", unsafe_allow_html=True)
