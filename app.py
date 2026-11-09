@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS avanzados (Forzando la fila horizontal para los botones en movil y desktop)
+# Estilos CSS avanzados optimizados para movil
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -26,6 +26,8 @@ st.markdown("""
     .block-container {
         padding-top: 1.5rem !important;
         max-width: 55rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
     
     #MainMenu {visibility: hidden;}
@@ -38,32 +40,33 @@ st.markdown("""
         font-weight: 700;
     }
     
-    /* Forzar que las 3 columnas de los botones esten siempre en una sola fila horizontal */
+    /* Forzar que las 3 columnas de los botones entren perfectamente en una sola fila en movil */
     div[data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
-        gap: 0.5rem;
+        gap: 6px !important;
+        width: 100% !important;
     }
     
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
-        width: 33.33% !important;
         flex: 1 !important;
         min-width: 0 !important;
+        width: auto !important;
     }
     
     div.stButton > button {
         background-color: #111827 !important;
         color: #9ca3af !important;
         border: 1px solid #1f2937 !important;
-        border-radius: 0.75rem !important;
+        border-radius: 0.5rem !important;
         font-weight: 600 !important;
-        padding: 0.5rem 0.25rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.4rem 0.1rem !important;
+        font-size: 0.72rem !important;
         box-shadow: none !important;
         transition: all 0.2s ease !important;
-        width: 100%;
-        white-space: nowrap;
+        width: 100% !important;
+        white-space: nowrap !important;
     }
     
     div.stButton > button:hover {
@@ -107,8 +110,8 @@ except Exception:
 # Titulo y Subtitulo
 st.markdown("""
 <div style="text-align: center; max-width: 48rem; margin: 0 auto 1.5rem auto;">
-    <h2 style="font-size: 2.0rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem;">Evalua tu oratoria con precision de experto</h2>
-    <p style="color: #9ca3af; font-size: 0.95rem;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
+    <h2 style="font-size: 1.7rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem;">Evalua tu oratoria con precision de experto</h2>
+    <p style="color: #9ca3af; font-size: 0.88rem;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -142,13 +145,13 @@ if st.session_state["input_mode"] == "upload":
         video_to_process = uploaded_file
 
 elif st.session_state["input_mode"] == "record":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.9rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
     recorded_file = st.camera_input("Grabar discurso")
     if recorded_file is not None:
         video_to_process = recorded_file
 
 elif st.session_state["input_mode"] == "youtube":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.9rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
     youtube_url = st.text_input("Enlace de YouTube", placeholder="https://www.youtube.com/watch?v=...")
     if youtube_url:
         st.info("Nota: Para un analisis multimodal optimo, te recomendamos usar la opcion de subir archivo o grabacion directa.")
@@ -231,17 +234,17 @@ if video_to_process is not None:
 else:
     # 5 ITEMS PRINCIPALES
     st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; font-size: 1.1rem; color: #9ca3af; margin-bottom: 1rem;'>Que evaluara nuestra IA en tu intervencion?</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; font-size: 1.0rem; color: #9ca3af; margin-bottom: 1rem;'>Que evaluara nuestra IA en tu intervencion?</h3>", unsafe_allow_html=True)
     
     col_i1, col_i2, col_i3, col_i4, col_i5 = st.columns(5)
     
     with col_i1:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 1rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.85rem; color: #f9fafb;'>1. Conviccion Global</div><div style='font-size: 0.7rem; color: #9ca3af; margin-top: 0.4rem;'>Nivel de impacto general</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.75rem; border-radius: 0.75rem; text-align: center; height: 105px;'><div style='font-weight: 600; font-size: 0.78rem; color: #f9fafb;'>1. Conviccion Global</div><div style='font-size: 0.65rem; color: #9ca3af; margin-top: 0.3rem;'>Nivel de impacto general</div></div>", unsafe_allow_html=True)
     with col_i2:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 1rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.85rem; color: #f9fafb;'>2. Lenguaje Corporal</div><div style='font-size: 0.7rem; color: #9ca3af; margin-top: 0.4rem;'>Postura y gestos de manos</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.75rem; border-radius: 0.75rem; text-align: center; height: 105px;'><div style='font-weight: 600; font-size: 0.78rem; color: #f9fafb;'>2. Lenguaje Corporal</div><div style='font-size: 0.65rem; color: #9ca3af; margin-top: 0.3rem;'>Postura y gestos de manos</div></div>", unsafe_allow_html=True)
     with col_i3:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 1rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.85rem; color: #f9fafb;'>3. Voz y Tonalidad</div><div style='font-size: 0.7rem; color: #9ca3af; margin-top: 0.4rem;'>Modulacion y silencios</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.75rem; border-radius: 0.75rem; text-align: center; height: 105px;'><div style='font-weight: 600; font-size: 0.78rem; color: #f9fafb;'>3. Voz y Tonalidad</div><div style='font-size: 0.65rem; color: #9ca3af; margin-top: 0.3rem;'>Modulacion y silencios</div></div>", unsafe_allow_html=True)
     with col_i4:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 1rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.85rem; color: #f9fafb;'>4. Estructura Pitch</div><div style='font-size: 0.7rem; color: #9ca3af; margin-top: 0.4rem;'>Gancho y persuasion</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.75rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.78rem; color: #f9fafb;'>4. Estructura Pitch</div><div style='font-size: 0.65rem; color: #9ca3af; margin-top: 0.3rem;'>Gancho y persuasion</div></div>", unsafe_allow_html=True)
     with col_i5:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 1rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.85rem; color: #f9fafb;'>5. Conexion Emocional</div><div style='font-size: 0.7rem; color: #9ca3af; margin-top: 0.4rem;'>Empatia y resonancia</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.75rem; border-radius: 0.75rem; text-align: center; height: 110px;'><div style='font-weight: 600; font-size: 0.78rem; color: #f9fafb;'>5. Conexion Emocional</div><div style='font-size: 0.65rem; color: #9ca3af; margin-top: 0.3rem;'>Empatia y resonancia</div></div>", unsafe_allow_html=True)
