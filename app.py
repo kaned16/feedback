@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS estrictos para mantener los 3 botones en fila horizontal, centrados y con estetica oscura
+# Estilos CSS optimizados para dispositivos moviles y escritorio (Apple/Notion Aesthetic)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -24,9 +24,9 @@ st.markdown("""
     }
     
     .block-container {
-        padding-top: 1.5rem !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        padding-top: 1.2rem !important;
+        padding-left: 0.6rem !important;
+        padding-right: 0.6rem !important;
         max-width: 48rem !important;
     }
     
@@ -40,34 +40,33 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* FORZAR FILA HORIZONTAL Y CENTRADO DE LAS COLUMNAS DE OPCIONES */
+    /* FORZAR FILA HORIZONTAL PERFECTAMENTE CENTRADA Y SIN DESBORDE EN MOVIL */
     div[data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 4px !important;
         width: 100% !important;
-        max-width: 400px !important;
         margin: 0 auto !important;
     }
     
     div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
-        flex: 1 1 0% !important;
+        flex: 1 !important;
         min-width: 0 !important;
         width: auto !important;
     }
 
-    /* ESTETICA DE LOS BOTONES DE OPCION */
+    /* ESTILO DE LOS BOTONES DE OPCION COMPACTOS */
     div.stButton > button {
         background-color: #111827 !important;
         color: #9ca3af !important;
         border: 1px solid #1f2937 !important;
-        border-radius: 0.75rem !important;
+        border-radius: 0.6rem !important;
         font-weight: 600 !important;
-        padding: 0.45rem 0.2rem !important;
-        font-size: 0.75rem !important;
+        padding: 0.4rem 0.05rem !important;
+        font-size: 0.7rem !important;
         box-shadow: none !important;
         transition: all 0.2s ease !important;
         width: 100% !important;
@@ -80,12 +79,12 @@ st.markdown("""
         border-color: #374151 !important;
     }
 
-    /* OSCURECER COMPONENTES DE CARGA Y CAMARA NATIVOS */
+    /* ESTILO OSCURO PARA CARGA DE ARCHIVOS Y CAMARA */
     div[data-testid="stFileUploader"], div[data-testid="stCameraInput"] {
         background-color: #111827 !important;
         border: 1px solid #1f2937 !important;
         border-radius: 1rem !important;
-        padding: 1rem !important;
+        padding: 0.8rem !important;
     }
 
     div[data-testid="stFileUploader"] section, div[data-testid="stCameraInput"] section {
@@ -130,9 +129,9 @@ except Exception:
 
 # Título y Subtítulo
 st.markdown("""
-<div style="text-align: center; max-width: 44rem; margin: 0 auto 1.2rem auto;">
-    <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem;">Evalua tu oratoria con precision de experto</h2>
-    <p style="color: #9ca3af; font-size: 0.85rem; line-height: 1.5;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
+<div style="text-align: center; max-width: 44rem; margin: 0 auto 1rem auto;">
+    <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.3rem;">Evalua tu oratoria con precision de experto</h2>
+    <p style="color: #9ca3af; font-size: 0.82rem; line-height: 1.4;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -157,15 +156,15 @@ with col3:
         st.session_state["input_mode"] = "youtube"
         st.rerun()
 
-st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-bottom: 0.8rem;'></div>", unsafe_allow_html=True)
 
 video_to_process = None
 
 if st.session_state["input_mode"] == "upload":
     st.markdown("""
-    <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 0.8rem; padding: 1rem; text-align: center; margin-bottom: 0.6rem;">
-        <p style="color: #f3f4f6; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem;">Sube tu archivo de video</p>
-        <p style="color: #9ca3af; font-size: 0.72rem;">Formatos compatibles: MP4, MOV, WEBM (Max. 200MB)</p>
+    <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 0.8rem; padding: 0.8rem; text-align: center; margin-bottom: 0.5rem;">
+        <p style="color: #f3f4f6; font-weight: 600; font-size: 0.82rem; margin-bottom: 0.1rem;">Sube tu archivo de video</p>
+        <p style="color: #9ca3af; font-size: 0.7rem;">Formatos compatibles: MP4, MOV, WEBM (Max. 200MB)</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -174,13 +173,13 @@ if st.session_state["input_mode"] == "upload":
         video_to_process = uploaded_file
 
 elif st.session_state["input_mode"] == "record":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.8rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
     recorded_file = st.camera_input("Grabar discurso", label_visibility="collapsed")
     if recorded_file is not None:
         video_to_process = recorded_file
 
 elif st.session_state["input_mode"] == "youtube":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.8rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
     youtube_url = st.text_input("Enlace de YouTube", placeholder="https://www.youtube.com/watch?v=...")
     if youtube_url:
         st.info("Nota: Para un analisis multimodal optimo, te recomendamos usar la opcion de subir archivo o grabacion directa.")
@@ -262,7 +261,7 @@ if video_to_process is not None:
 
 else:
     # 5 ITEMS PRINCIPALES
-    st.markdown("<div style='margin-top: 1.8rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align: center; font-size: 0.95rem; color: #9ca3af; margin-bottom: 0.8rem;'>Que evaluara nuestra IA en tu intervencion?</h3>", unsafe_allow_html=True)
     
     col_i1, col_i2, col_i3, col_i4, col_i5 = st.columns(5)
