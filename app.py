@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS avanzados para una visualizacion impecable en moviles y escritorio
+# Estilos CSS avanzados para optimizar la vista movil y escritorio
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -38,23 +38,6 @@ st.markdown("""
         color: #f9fafb !important;
         font-family: 'Inter', sans-serif;
         font-weight: 700;
-    }
-    
-    /* Estilo limpio para el selector horizontal de opciones */
-    div.row-widget.stRadio > div {
-        flex-direction: row !important;
-        justify-content: center !important;
-        gap: 10px !important;
-    }
-
-    div.row-widget.stRadio label {
-        background-color: #111827 !important;
-        color: #9ca3af !important;
-        border: 1px solid #1f2937 !important;
-        border-radius: 0.75rem !important;
-        padding: 0.5rem 1rem !important;
-        font-weight: 600 !important;
-        font-size: 0.85rem !important;
     }
 
     div[data-testid="stFileUploader"] {
@@ -92,20 +75,20 @@ except Exception:
 # Titulo y Subtitulo
 st.markdown("""
 <div style="text-align: center; max-width: 48rem; margin: 0 auto 1.2rem auto;">
-    <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem;">Evalua tu oratoria con precision de experto</h2>
-    <p style="color: #9ca3af; font-size: 0.85rem;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
+    <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem;">Evalua tu oratoria con precision de experto</h2>
+    <p style="color: #9ca3af; font-size: 0.82rem;">Sube un archivo, grabate directamente o ingresa un enlace de YouTube para recibir un analisis multimodal profundo.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Selector de modo horizontal adaptado a moviles
-input_option = st.radio(
+# Selector moderno tipo Píldoras (se ajusta de forma limpia y responsiva en celulares)
+input_option = st.pills(
     "Selecciona el modo de entrada",
     options=["Subir Archivo", "Grabar Video", "YouTube"],
-    horizontal=True,
+    default="Subir Archivo",
     label_visibility="collapsed"
 )
 
-st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-bottom: 0.8rem;'></div>", unsafe_allow_html=True)
 
 video_to_process = None
 
@@ -115,13 +98,13 @@ if input_option == "Subir Archivo":
         video_to_process = uploaded_file
 
 elif input_option == "Grabar Video":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
     recorded_file = st.camera_input("Grabar discurso")
     if recorded_file is not None:
         video_to_process = recorded_file
 
 elif input_option == "YouTube":
-    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
     youtube_url = st.text_input("Enlace de YouTube", placeholder="https://www.youtube.com/watch?v=...")
     if youtube_url:
         st.info("Nota: Para un analisis multimodal optimo, te recomendamos usar la opcion de subir archivo o grabacion directa.")
@@ -203,7 +186,7 @@ if video_to_process is not None:
 
 else:
     # 5 ITEMS PRINCIPALES
-    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align: center; font-size: 0.95rem; color: #9ca3af; margin-bottom: 0.8rem;'>Que evaluara nuestra IA en tu intervencion?</h3>", unsafe_allow_html=True)
     
     col_i1, col_i2, col_i3, col_i4, col_i5 = st.columns(5)
