@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS avanzados: Centrado absoluto y Modo Oscuro Total para el uploader
+# Estilos CSS avanzados para eliminar los bloques blancos y unificar el modo oscuro
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -40,39 +40,25 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* FORZAR CENTRADO ABSOLUTO DE LAS PILLAS / OPCIONES */
-    div[data-testid="stPills"] {
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
-    }
-    
-    div[data-testid="stPills"] > div {
-        display: flex !important;
-        justify-content: center !important;
-        margin: 0 auto !important;
-        width: auto !important;
-    }
-
-    /* ELIMINAR EL FONDO BLANCO DEL UPLOADER Y HACERLO OSCURO MINIMALISTA */
-    div[data-testid="stFileUploader"] {
+    /* OSCURECER POR COMPLETO CUALQUIER COMPONENTE DE CARGA O CAMARA NATIVO */
+    div[data-testid="stFileUploader"], div[data-testid="stCameraInput"] {
         background-color: #111827 !important;
         border: 1px solid #1f2937 !important;
         border-radius: 1rem !important;
         padding: 1rem !important;
     }
 
-    div[data-testid="stFileUploader"] section {
+    div[data-testid="stFileUploader"] section, div[data-testid="stCameraInput"] section {
         background-color: #0b0f19 !important;
-        border: 2px dashed #4b5563 !important;
+        border: 2px dashed #374151 !important;
         border-radius: 0.75rem !important;
     }
     
-    div[data-testid="stFileUploader"] section * {
+    div[data-testid="stFileUploader"] *, div[data-testid="stCameraInput"] * {
         color: #f3f4f6 !important;
     }
     
-    div[data-testid="stFileUploader"] button {
+    div[data-testid="stFileUploader"] button, div[data-testid="stCameraInput"] button {
         background-color: #7c3aed !important;
         color: #ffffff !important;
         border: none !important;
@@ -110,26 +96,35 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Selector de modos centrado
-input_option = st.pills(
-    "Modo de entrada",
-    options=["Subir Archivo", "Grabar Video", "YouTube"],
-    default="Subir Archivo",
-    label_visibility="collapsed"
-)
+# CENTRADO PERFECTO MEDIANTE COLUMNAS SIMÉTRICAS
+col_l, col_m, col_r = st.columns([0.15, 0.7, 0.15])
+with col_m:
+    input_option = st.pills(
+        "Modo de entrada",
+        options=["Subir Archivo", "Grabar Video", "YouTube"],
+        default="Subir Archivo",
+        label_visibility="collapsed"
+    )
 
 st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
 
 video_to_process = None
 
 if input_option == "Subir Archivo":
-    uploaded_file = st.file_uploader("Sube tu archivo de video (.mp4, .mov, .webm)", type=["mp4", "mov", "webm"])
+    st.markdown("""
+    <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 0.8rem; padding: 1rem; text-align: center; margin-bottom: 0.6rem;">
+        <p style="color: #f3f4f6; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem;">Sube tu archivo de video</p>
+        <p style="color: #9ca3af; font-size: 0.72rem;">Formatos compatibles: MP4, MOV, WEBM (Max. 200MB)</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    uploaded_file = st.file_uploader("", type=["mp4", "mov", "webm"], label_visibility="collapsed")
     if uploaded_file is not None:
         video_to_process = uploaded_file
 
 elif input_option == "Grabar Video":
     st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
-    recorded_file = st.camera_input("Grabar discurso")
+    recorded_file = st.camera_input("Grabar discurso", label_visibility="collapsed")
     if recorded_file is not None:
         video_to_process = recorded_file
 
