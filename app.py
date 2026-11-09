@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS definitivos para centrado absoluto y modo oscuro total
+# Estilos CSS estrictos para mantener los 3 botones en fila horizontal, centrados y con estetica oscura
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -40,7 +40,47 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* ESTILO OSCURO TOTAL PARA COMPONENTES DE CARGA Y CAMARA */
+    /* FORZAR FILA HORIZONTAL Y CENTRADO DE LAS COLUMNAS DE OPCIONES */
+    div[data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
+    }
+    
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+        width: auto !important;
+    }
+
+    /* ESTETICA DE LOS BOTONES DE OPCION */
+    div.stButton > button {
+        background-color: #111827 !important;
+        color: #9ca3af !important;
+        border: 1px solid #1f2937 !important;
+        border-radius: 0.75rem !important;
+        font-weight: 600 !important;
+        padding: 0.45rem 0.2rem !important;
+        font-size: 0.75rem !important;
+        box-shadow: none !important;
+        transition: all 0.2s ease !important;
+        width: 100% !important;
+        white-space: nowrap !important;
+    }
+    
+    div.stButton > button:hover {
+        background-color: #1f2937 !important;
+        color: #ffffff !important;
+        border-color: #374151 !important;
+    }
+
+    /* OSCURECER COMPONENTES DE CARGA Y CAMARA NATIVOS */
     div[data-testid="stFileUploader"], div[data-testid="stCameraInput"] {
         background-color: #111827 !important;
         border: 1px solid #1f2937 !important;
@@ -99,24 +139,21 @@ st.markdown("""
 if "input_mode" not in st.session_state:
     st.session_state["input_mode"] = "upload"
 
-# BOTONES DE OPCIONES CENTRADOS PERFECTAMENTE EN HORIZONTAL
-col_pad1, c1, c2, c3, col_pad2 = st.columns([0.5, 1.2, 1.2, 1.2, 0.5])
+# 3 BOTONES EN UNA SOLA FILA HORIZONTAL Y CENTRADOS
+col1, col2, col3 = st.columns(3)
 
-with c1:
-    is_upload = st.session_state["input_mode"] == "upload"
-    if st.button("📁 Subir Archivo", use_container_width=True, type="primary" if is_upload else "secondary"):
+with col1:
+    if st.button("Subir Archivo", key="b_up"):
         st.session_state["input_mode"] = "upload"
         st.rerun()
 
-with c2:
-    is_record = st.session_state["input_mode"] == "record"
-    if st.button("🎥 Grabar Video", use_container_width=True, type="primary" if is_record else "secondary"):
+with col2:
+    if st.button("Grabar Video", key="b_rec"):
         st.session_state["input_mode"] = "record"
         st.rerun()
 
-with c3:
-    is_youtube = st.session_state["input_mode"] == "youtube"
-    if st.button("▶️ YouTube", use_container_width=True, type="primary" if is_youtube else "secondary"):
+with col3:
+    if st.button("YouTube", key="b_yt"):
         st.session_state["input_mode"] = "youtube"
         st.rerun()
 
@@ -157,7 +194,7 @@ if video_to_process is not None:
         
     with col_btn:
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-        if st.button("⚡ Iniciar Analisis con IA", key="btn_analizar"):
+        if st.button("Iniciar Analisis con IA", key="btn_analizar"):
             with st.spinner("Subiendo video y analizando a profundidad con Gemini..."):
                 remote_file = None
                 try:
@@ -233,7 +270,7 @@ else:
     with col_i1:
         st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>1. Conviccion</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Impacto</div></div>", unsafe_allow_html=True)
     with col_i2:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>2. Corporal</div><div style='font-size: 0.55rem; color: #059669; margin-top: 0.2rem;'>Postura</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>2. Corporal</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Postura</div></div>", unsafe_allow_html=True)
     with col_i3:
         st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>3. Voz</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Modulacion</div></div>", unsafe_allow_html=True)
     with col_i4:
