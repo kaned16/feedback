@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos CSS avanzados para eliminar los bloques blancos y unificar el modo oscuro
+# Estilos CSS definitivos para centrado absoluto y modo oscuro total
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -40,7 +40,7 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* OSCURECER POR COMPLETO CUALQUIER COMPONENTE DE CARGA O CAMARA NATIVO */
+    /* ESTILO OSCURO TOTAL PARA COMPONENTES DE CARGA Y CAMARA */
     div[data-testid="stFileUploader"], div[data-testid="stCameraInput"] {
         background-color: #111827 !important;
         border: 1px solid #1f2937 !important;
@@ -96,21 +96,35 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CENTRADO PERFECTO MEDIANTE COLUMNAS SIMÉTRICAS
-col_l, col_m, col_r = st.columns([0.15, 0.7, 0.15])
-with col_m:
-    input_option = st.pills(
-        "Modo de entrada",
-        options=["Subir Archivo", "Grabar Video", "YouTube"],
-        default="Subir Archivo",
-        label_visibility="collapsed"
-    )
+if "input_mode" not in st.session_state:
+    st.session_state["input_mode"] = "upload"
+
+# BOTONES DE OPCIONES CENTRADOS PERFECTAMENTE EN HORIZONTAL
+col_pad1, c1, c2, c3, col_pad2 = st.columns([0.5, 1.2, 1.2, 1.2, 0.5])
+
+with c1:
+    is_upload = st.session_state["input_mode"] == "upload"
+    if st.button("📁 Subir Archivo", use_container_width=True, type="primary" if is_upload else "secondary"):
+        st.session_state["input_mode"] = "upload"
+        st.rerun()
+
+with c2:
+    is_record = st.session_state["input_mode"] == "record"
+    if st.button("🎥 Grabar Video", use_container_width=True, type="primary" if is_record else "secondary"):
+        st.session_state["input_mode"] = "record"
+        st.rerun()
+
+with c3:
+    is_youtube = st.session_state["input_mode"] == "youtube"
+    if st.button("▶️ YouTube", use_container_width=True, type="primary" if is_youtube else "secondary"):
+        st.session_state["input_mode"] = "youtube"
+        st.rerun()
 
 st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
 
 video_to_process = None
 
-if input_option == "Subir Archivo":
+if st.session_state["input_mode"] == "upload":
     st.markdown("""
     <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 0.8rem; padding: 1rem; text-align: center; margin-bottom: 0.6rem;">
         <p style="color: #f3f4f6; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem;">Sube tu archivo de video</p>
@@ -122,13 +136,13 @@ if input_option == "Subir Archivo":
     if uploaded_file is not None:
         video_to_process = uploaded_file
 
-elif input_option == "Grabar Video":
+elif st.session_state["input_mode"] == "record":
     st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Usa tu camara para grabar tu discurso directamente cuando estes listo.</p>", unsafe_allow_html=True)
     recorded_file = st.camera_input("Grabar discurso", label_visibility="collapsed")
     if recorded_file is not None:
         video_to_process = recorded_file
 
-elif input_option == "YouTube":
+elif st.session_state["input_mode"] == "youtube":
     st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.82rem;'>Pega el enlace de un discurso o presentacion de YouTube:</p>", unsafe_allow_html=True)
     youtube_url = st.text_input("Enlace de YouTube", placeholder="https://www.youtube.com/watch?v=...")
     if youtube_url:
@@ -143,7 +157,7 @@ if video_to_process is not None:
         
     with col_btn:
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-        if st.button("Iniciar Analisis con IA", key="btn_analizar"):
+        if st.button("⚡ Iniciar Analisis con IA", key="btn_analizar"):
             with st.spinner("Subiendo video y analizando a profundidad con Gemini..."):
                 remote_file = None
                 try:
@@ -219,7 +233,7 @@ else:
     with col_i1:
         st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>1. Conviccion</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Impacto</div></div>", unsafe_allow_html=True)
     with col_i2:
-        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>2. Corporal</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Postura</div></div>", unsafe_allow_html=True)
+        st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>2. Corporal</div><div style='font-size: 0.55rem; color: #059669; margin-top: 0.2rem;'>Postura</div></div>", unsafe_allow_html=True)
     with col_i3:
         st.markdown("<div style='background-color: #111827; border: 1px solid #1f2937; padding: 0.4rem; border-radius: 0.5rem; text-align: center; height: 90px;'><div style='font-weight: 600; font-size: 0.65rem; color: #f9fafb;'>3. Voz</div><div style='font-size: 0.55rem; color: #9ca3af; margin-top: 0.2rem;'>Modulacion</div></div>", unsafe_allow_html=True)
     with col_i4:
